@@ -79,13 +79,13 @@
           <string notr="true"/>
          </property>
          <property name="text">
-          <string/>
+          <string>0</string>
          </property>
          <property name="maxLength">
           <number>3</number>
          </property>
          <property name="cursorPosition">
-          <number>0</number>
+          <number>1</number>
          </property>
         </widget>
        </item>
@@ -124,13 +124,6 @@
         <widget class="QPushButton" name="pushButton_2">
          <property name="text">
           <string>Reset</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton_3">
-         <property name="text">
-          <string>Minimize</string>
          </property>
         </widget>
        </item>
