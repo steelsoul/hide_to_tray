@@ -28,7 +28,7 @@ class Example(QMainWindow):
         
         self.initUI()
         
-        self.FirstBtnStates = ("Start", "Stop", "Continue")
+        self.FirstBtnStates = ("Start", "Pause", "Continue")
         
         self.ui.pushButton.setText(self.FirstBtnStates[0])
         self.ui.pushButton.setEnabled(False)
@@ -42,10 +42,8 @@ class Example(QMainWindow):
         self.ui.pushButton.clicked.connect(self.on_start_timer)
         self.ui.pushButton_2.clicked.connect(self.on_reset_timer)
         
-        self.timer = QtCore.QTimer(self)
-        
-        #self.timer.setSingleShot(True)
-        #self.timer.timeout.connect(self.on_timeout)
+        self.timer = QtCore.QTimer(self)        
+        self.timer.timeout.connect(self.on_timeout)
         
         self.infoTimer = QtCore.QTimer(self)
         self.infoTimer.timeout.connect(self.on_info_timeout)
@@ -72,21 +70,19 @@ class Example(QMainWindow):
         #print ("On start timer")
         item = QObject.sender(self)
         if item.text() == self.FirstBtnStates[0]: # Start timer
-            print("case1")
-            self.timer.timeout.connect(self.on_timeout)
+            #print("case1")
             self.timer.start(self.timeout * 60 * 1000)
             self.info_timeout = self.timeout * 60
             self.infoTimer.start(1000) # 1 sec duration
             item.setText(self.FirstBtnStates[1])
         elif item.text() == self.FirstBtnStates[1]: # Stop timer
-            print("case2")
-            self.timer.timeout.disconnect(self.on_timeout)
+            #print("case2")
             self.timer.stop()
             self.infoTimer.stop()
             item.setText(self.FirstBtnStates[2])
         else: # Continue timer 
-            print("case3")
-            self.timer.start(self.timeout * 60)
+            #print("case3")
+            self.timer.start(self.timeout * 60 * 1000)            
             self.infoTimer.start(1000)
             item.setText(self.FirstBtnStates[1])
 
@@ -94,7 +90,7 @@ class Example(QMainWindow):
         self.ui.pushButton.setText(self.FirstBtnStates[0])
         self.timer.stop()
         self.infoTimer.stop()
-        self.ui.lineEdit.setText("0")
+        self.ui.lineEdit.setText("")
         self.timeout = 0
         self.info_timeout = 0
         self.ui.lcdNumber.display(self.timeout * 60)  
@@ -102,7 +98,7 @@ class Example(QMainWindow):
     def on_timeout(self):
         self.timer.stop()
         self.infoTimer.stop()
-        self.ui.lcdNumber.display(self.timeout)
+        self.ui.lcdNumber.display(self.timeout * 60)
         self.info_timeout = 0
         self.ui.pushButton.setText(self.FirstBtnStates[0])
         self.info_timeout = self.timeout * 60
@@ -123,6 +119,7 @@ class Example(QMainWindow):
             if self.windowState() & QtCore.Qt.WindowMinimized:  
                 QtCore.QTimer.singleShot(0, self, QtCore.SLOT("hide()"))
                 self.showAction.setText("Show") 
+                self.isShown = False
         QMainWindow.changeEvent(self, event)              
         
     def initUI(self):  

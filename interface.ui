@@ -39,7 +39,8 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>bomb.png</normaloff>bomb.png</iconset>
+    <normaloff>../../../.designer/backup/bomb.png</normaloff>
+    <normalon>bomb.png</normalon>../../../.designer/backup/bomb.png</iconset>
   </property>
   <property name="windowOpacity">
    <double>1.000000000000000</double>
@@ -79,13 +80,13 @@
           <string notr="true"/>
          </property>
          <property name="text">
-          <string>0</string>
+          <string/>
          </property>
          <property name="maxLength">
           <number>3</number>
          </property>
          <property name="cursorPosition">
-          <number>1</number>
+          <number>0</number>
          </property>
         </widget>
        </item>
@@ -138,7 +139,7 @@
      <x>0</x>
      <y>0</y>
      <width>401</width>
-     <height>18</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>
