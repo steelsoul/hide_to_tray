@@ -27,6 +27,8 @@ class Example(QMainWindow):
         self.systemTrayIcon.show()
         
         self.initUI()
+
+        self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         
         self.FirstBtnStates = ("Start", "Pause", "Continue")
         
@@ -108,6 +110,7 @@ class Example(QMainWindow):
         msgBox = QMessageBox()
         msgBox.setWindowTitle("== Notification ==")
         msgBox.setText("On timer!")
+        msgBox.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         msgBox.exec_()
         
     def on_info_timeout(self):
