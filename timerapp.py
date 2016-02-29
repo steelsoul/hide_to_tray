@@ -77,16 +77,19 @@ class Example(QMainWindow):
             self.info_timeout = self.timeout * 60
             self.infoTimer.start(1000) # 1 sec duration
             item.setText(self.FirstBtnStates[1])
+            self.systemTrayIcon.setIcon(QIcon("bomb_run.png"))
         elif item.text() == self.FirstBtnStates[1]: # Stop timer
             #print("case2")
             self.timer.stop()
             self.infoTimer.stop()
             item.setText(self.FirstBtnStates[2])
+            self.systemTrayIcon.setIcon(QIcon("bomb.png"))
         else: # Continue timer 
             #print("case3")
             self.timer.start(self.timeout * 60 * 1000)            
             self.infoTimer.start(1000)
             item.setText(self.FirstBtnStates[1])
+            self.systemTrayIcon.setIcon(QIcon("bomb_run.png"))
 
     def on_reset_timer(self, triggered):
         self.ui.pushButton.setText(self.FirstBtnStates[0])
@@ -95,7 +98,8 @@ class Example(QMainWindow):
         self.ui.lineEdit.setText("")
         self.timeout = 0
         self.info_timeout = 0
-        self.ui.lcdNumber.display(self.timeout * 60)  
+        self.ui.lcdNumber.display(self.timeout * 60)
+        self.systemTrayIcon.setIcon(QIcon("bomb.png"))        
         
     def on_timeout(self):
         self.timer.stop()
@@ -112,6 +116,7 @@ class Example(QMainWindow):
         msgBox.setText("On timer!")
         msgBox.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         msgBox.exec_()
+        self.systemTrayIcon.setIcon(QIcon("bomb.png"))  
         
     def on_info_timeout(self):
         self.info_timeout -= 1
