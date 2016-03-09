@@ -83,7 +83,7 @@ class Example(QMainWindow):
             self.timer.stop()
             self.infoTimer.stop()
             item.setText(self.FirstBtnStates[2])
-            self.systemTrayIcon.setIcon(QIcon("bomb.png"))
+            self.systemTrayIcon.setIcon(QIcon("bomb_paused.png"))
         else: # Continue timer 
             #print("case3")
             self.timer.start(self.timeout * 60 * 1000)            
