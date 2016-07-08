@@ -38,6 +38,7 @@ class TimerWindow(QMainWindow):
 		self.timeout = 0
 		self.info_timeout = 0;
 
+
 		self.ui.lineEdit.textChanged.connect(self.on_text_edit_changed)
 		self.ui.lineEdit.returnPressed.connect(self.on_return_pressed)
 		self.ui.lineEdit.setValidator(QRegExpValidator(QtCore.QRegExp("[0-9]+")))
@@ -88,12 +89,17 @@ class TimerWindow(QMainWindow):
 			self.infoTimer.start(1000) # 1 sec duration
 			item.setText(self.FirstBtnStates[1])
 			self.systemTrayIcon.setIcon(QIcon("bomb_run.png"))
+                        self.ui.lineEdit.setReadOnly(True)
+                        # Add context menu item 'pause' TODO
+#                        self.showAction = self.trayMenu.addAction("Pause")
+#                        self.showAction.triggered.connect(self.togglePause)
 		elif item.text() == self.FirstBtnStates[1]: # Stop timer
 			#print("case2")
 			self.timer.stop()
 			self.infoTimer.stop()
 			item.setText(self.FirstBtnStates[2])
 			self.systemTrayIcon.setIcon(QIcon("bomb_paused.png"))
+                        self.systemTrayIcon.setToolTip("Paused")
 		else: # Continue timer
 			#print("case3")
 			self.timer.start(self.timeout * 60 * 1000)
@@ -110,6 +116,8 @@ class TimerWindow(QMainWindow):
 		self.info_timeout = 0
 		self.ui.lcdNumber.display(self.timeout * 60)
 		self.systemTrayIcon.setIcon(QIcon("bomb.png"))
+                self.systemTrayIcon.setToolTip("")
+                self.ui.lineEdit.setReadOnly(False)
 
 	def on_timeout(self):
 		self.timer.stop()
@@ -127,10 +135,12 @@ class TimerWindow(QMainWindow):
 		msgBox.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 		msgBox.exec_()
 		self.systemTrayIcon.setIcon(QIcon("bomb.png"))
+                self.systemTrayIcon.setToolTip("TImeout")
 
 	def on_info_timeout(self):
 		self.info_timeout -= 1
 		self.ui.lcdNumber.display(self.info_timeout)
+                self.systemTrayIcon.setToolTip("[%d min|left %d sec]" % (self.timeout, self.info_timeout))
 
 	def changeEvent(self, event):
 		if event.type() == QtCore.QEvent.WindowStateChange:
@@ -169,6 +179,13 @@ class TimerWindow(QMainWindow):
 		else:
 			item.setText("Show")
 			self.hide()
+
+#        def togglePause(self):
+#            self.timer.stop()
+#            self.infoTimer.stop()
+#            item.setText(self.FirstBtnStates[2])
+#            self.systemTrayIcon.setIcon(QIcon("bomb_paused.png"))
+#            self.systemTrayIcon.setToolTip("Paused")
 
 
 def main():
