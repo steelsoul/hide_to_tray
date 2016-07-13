@@ -97,7 +97,7 @@ class TimerWindow(QMainWindow):
 		self.infoTimer.stop()
 		self.ui.pushButton.setText(self.FirstBtnStates[2])
 		self.systemTrayIcon.setIcon(QIcon("bomb_paused.png"))
-		self.systemTrayIcon.setToolTip("[Paused|%d min set|%d sec left]" % (self.timeout, self.info_timeout))
+		self.systemTrayIcon.setToolTip("[Paused|%s" % (self.calc_time_info()))
 		self.timerState = TimerappStates["Pause"]
 		self.combineAction.setText("Resume")
 		
@@ -134,6 +134,7 @@ class TimerWindow(QMainWindow):
 		self.reset_timer()
 
 	def on_timeout(self):
+		self.systemTrayIcon.setToolTip("TImeout")
 		self.reset_timer()
 		self.ui.lcdNumber.display(self.timeout * 60)
 		self.isShown = True
@@ -143,12 +144,22 @@ class TimerWindow(QMainWindow):
 		msgBox.setText("On timer!")
 		msgBox.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 		msgBox.exec_()
-		self.systemTrayIcon.setToolTip("TImeout")
+
+		
+	def calc_time_info(self):
+		# if timeout less than 5 minutes then show seconds else show minutes
+		result = "[%d min|" % self.timeout
+		if self.timeout < 300:
+			result += ("|left %d sec]" % self.info_timeout)
+		else:
+			result += ("|left %d min]" % self.info_timeout/60)
+		return result
+			
 
 	def on_info_timeout(self):
 		self.info_timeout -= 1
 		self.ui.lcdNumber.display(self.info_timeout)
-		self.systemTrayIcon.setToolTip("[%d min|left %d sec]" % (self.timeout, self.info_timeout))
+		self.systemTrayIcon.setToolTip(self.calc_time_info())
 
 	def changeEvent(self, event):
 		if event.type() == QtCore.QEvent.WindowStateChange:
