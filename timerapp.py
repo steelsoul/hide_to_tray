@@ -149,7 +149,7 @@ class TimerWindow(QMainWindow):
 	def calc_time_info(self):
 		# if timeout less than 5 minutes then show seconds else show minutes
 		result = "[%d min|" % self.timeout
-		if self.timeout < 300:
+		if self.info_timeout < 300:
 			result += ("|left %d sec]" % self.info_timeout)
 		else:
 			result += ("|left %d min]" % self.info_timeout/60)
