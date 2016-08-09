@@ -8,7 +8,7 @@ from interface import Ui_MainWindow
 from PyQt4.Qt import QMessageBox, QObject
 
 TimerappStates = {"Run":1, "Pause":2, "Reset":3}
-AppVersion = "Timer v. 0.0.1a"
+AppVersion = "Timer v. 0.0.3a"
 
 class TimerWindow(QMainWindow):
 
@@ -17,12 +17,12 @@ class TimerWindow(QMainWindow):
 		self.initUI()
 		self.timerState = TimerappStates["Reset"]
 		#print "TimerState: ", self.timerState
-		self.systemTrayIcon = QSystemTrayIcon(QIcon("bomb.png"), self)
+		self.systemTrayIcon = QSystemTrayIcon(QIcon("bomb.png"), self)			# TODO: use absolute path
 		self.setup_menu()
 		self.systemTrayIcon.activated.connect(self.on_systemTrayIcon_activated)
 		self.systemTrayIcon.show()
 		self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
-		self.setup_logic()		
+		self.setup_logic()
 		
 	def setup_menu(self):
 		self.traymenu = QMenu(self)
@@ -40,18 +40,16 @@ class TimerWindow(QMainWindow):
 		self.FirstBtnStates = ("Start", "Pause", "Continue")
 		self.ui.pushButton.setText(self.FirstBtnStates[0])
 		self.ui.pushButton.setEnabled(False)
-		self.timeout = 0
-		self.info_timeout = 0;
+		self.info_timeout = 0;	# timeout information in seconds
+		self.init_timeout = 0;	# initial timer value in seconds
 		self.ui.lineEdit.textChanged.connect(self.on_text_edit_changed)
 		self.ui.lineEdit.returnPressed.connect(self.on_return_pressed)
 		self.ui.lineEdit.setValidator(QRegExpValidator(QtCore.QRegExp("[0-9]+")))
 		self.ui.pushButton.clicked.connect(self.on_start_btn_pressed)
 		self.ui.pushButton_2.clicked.connect(self.on_reset_timer)
-		self.timer = QtCore.QTimer(self)
-		self.timer.timeout.connect(self.on_timeout)
 		self.infoTimer = QtCore.QTimer(self)
 		self.infoTimer.timeout.connect(self.on_info_timeout)
-		self.systemTrayIcon.setToolTip(AppVersion)		
+		self.systemTrayIcon.setToolTip(AppVersion)
 
 	@QtCore.pyqtSlot(QSystemTrayIcon.ActivationReason)
 	def on_systemTrayIcon_activated(self, reason):
@@ -64,26 +62,21 @@ class TimerWindow(QMainWindow):
 	def on_text_edit_changed(self, text):
 		#print ("Input %s" % text)
 		if len(text) == 0:
-			self.timeout = 0
+			self.info_timeout = 0
 			self.ui.pushButton.setEnabled(False)
 		else:
-			self.timeout = int(text)
-			self.ui.lcdNumber.display(self.timeout * 60) #display timeout in seconds
-			if self.timeout != 0: 
+			self.info_timeout = int(text) * 60
+			self.ui.lcdNumber.display(self.info_timeout) #display timeout in seconds
+			if self.info_timeout > 0:
 				self.ui.pushButton.setEnabled(True)
+				self.init_timeout = self.info_timeout
 
 	def on_return_pressed(self):
 		#print ("on_return_pressed")
 		if self.ui.pushButton.text() == self.FirstBtnStates[0]:
-			self.timer.start(self.timeout * 60 * 1000)
-			self.info_timeout = self.timeout * 60
-			self.infoTimer.start(1000) # 1 sec duration
-			self.ui.pushButton.setText(self.FirstBtnStates[1])
-			self.systemTrayIcon.setIcon(QIcon("bomb_run.png"))
+			start_timer(self)
 			
 	def start_timer(self):
-		self.timer.start(self.timeout * 60 * 1000)
-		self.info_timeout = self.timeout * 60
 		self.infoTimer.start(1000) # 1 sec duration
 		self.ui.pushButton.setText(self.FirstBtnStates[1])
 		self.systemTrayIcon.setIcon(QIcon("bomb_run.png"))
@@ -93,7 +86,6 @@ class TimerWindow(QMainWindow):
 		self.combineAction.setVisible(True)
 		
 	def pause_timer(self):
-		self.timer.stop()
 		self.infoTimer.stop()
 		self.ui.pushButton.setText(self.FirstBtnStates[2])
 		self.systemTrayIcon.setIcon(QIcon("bomb_paused.png"))
@@ -102,15 +94,14 @@ class TimerWindow(QMainWindow):
 		self.combineAction.setText("Resume")
 		
 	def continue_timer(self):
-		self.timer.start(self.timeout * 60 * 1000)
 		self.infoTimer.start(1000)
 		self.ui.pushButton.setText(self.FirstBtnStates[1])
-		self.systemTrayIcon.setIcon(QIcon("bomb_run.png"))	
+		self.systemTrayIcon.setIcon(QIcon("bomb_run.png"))
 		self.combineAction.setText("Pause")
 		self.timerState = TimerappStates["Run"]	
 
 	def on_start_btn_pressed(self, triggered):
-		if self.timerState == TimerappStates["Reset"]:		# Start timer		
+		if self.timerState == TimerappStates["Reset"]:		# Start timer
 			self.start_timer()
 		elif self.timerState == TimerappStates["Run"]: 		# Pause timer
 			self.pause_timer()
@@ -119,14 +110,12 @@ class TimerWindow(QMainWindow):
 			
 	def reset_timer(self):
 		self.ui.pushButton.setText(self.FirstBtnStates[0])
-		self.timer.stop()
 		self.infoTimer.stop()
-		self.ui.lineEdit.setText("")
-		self.timeout = 0
 		self.info_timeout = 0
-		self.ui.lcdNumber.display(self.timeout * 60)
+		self.ui.lineEdit.setText("")
+		self.ui.lcdNumber.display(self.info_timeout)
 		self.systemTrayIcon.setIcon(QIcon("bomb.png"))
-		self.systemTrayIcon.setToolTip(AppVersion)	
+		self.systemTrayIcon.setToolTip(AppVersion)
 		self.ui.lineEdit.setReadOnly(False)
 		self.combineAction.setVisible(False)
 
@@ -136,7 +125,6 @@ class TimerWindow(QMainWindow):
 	def on_timeout(self):
 		self.systemTrayIcon.setToolTip("TImeout")
 		self.reset_timer()
-		self.ui.lcdNumber.display(self.timeout * 60)
 		self.isShown = True
 		self.showNormal()
 		msgBox = QMessageBox()		# TODO: Center message box
@@ -144,22 +132,22 @@ class TimerWindow(QMainWindow):
 		msgBox.setText("On timer!")
 		msgBox.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 		msgBox.exec_()
-
 		
 	def calc_time_info(self):
 		# if timeout less than 5 minutes then show seconds else show minutes
-		result = "[%d min|" % self.timeout
+		result = "[%d min|" % (self.init_timeout / 60)
 		if self.info_timeout < 300:
 			result += ("|left %d sec]" % self.info_timeout)
 		else:
-			result += ("|left %d min]" % self.info_timeout/60)
+			result += ("|left %d min]" % (self.info_timeout / 60))
 		return result
 			
-
 	def on_info_timeout(self):
 		self.info_timeout -= 1
 		self.ui.lcdNumber.display(self.info_timeout)
 		self.systemTrayIcon.setToolTip(self.calc_time_info())
+		if 0 == self.info_timeout:
+			self.on_timeout()
 
 	def changeEvent(self, event):
 		if event.type() == QtCore.QEvent.WindowStateChange:
