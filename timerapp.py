@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import re
 from PyQt4 import QtCore
 from PyQt4.QtGui import *
 from interface import Ui_MainWindow
@@ -12,12 +13,12 @@ AppVersion = "Timer v. 0.0.3a"
 
 class TimerWindow(QMainWindow):
 
-	def __init__(self):
+	def __init__(self, path):
 		super(TimerWindow, self).__init__()
 		self.initUI()
 		self.timerState = TimerappStates["Reset"]
 		#print "TimerState: ", self.timerState
-		self.systemTrayIcon = QSystemTrayIcon(QIcon("bomb.png"), self)			# TODO: use absolute path
+		self.systemTrayIcon = QSystemTrayIcon(QIcon(path + "bomb.png"), self)			# TODO: use absolute path
 		self.setup_menu()
 		self.systemTrayIcon.activated.connect(self.on_systemTrayIcon_activated)
 		self.systemTrayIcon.show()
@@ -189,6 +190,11 @@ class TimerWindow(QMainWindow):
 			self.continue_timer()
 
 def main():
+	print ('Number of arguments:', len(sys.argv), 'arguments.')
+	print ('Argument List:', str(sys.argv))
+	pattern = r'.*/'
+	result = re.match(pattern, sys.argv[0])
+	print ('Result: ', result.group(0))
 	app = QApplication(sys.argv)
 
 	if QSystemTrayIcon.isSystemTrayAvailable() == False:
@@ -197,7 +203,7 @@ def main():
 
 		exit(-1)
 
-	ex = TimerWindow()
+	ex = TimerWindow(result.group(0))
 	sys.exit(app.exec_())
 
 
