@@ -15,9 +15,10 @@ class TimerWindow(QMainWindow):
 	def __init__(self, path):
 		super(TimerWindow, self).__init__()
 		self.initUI()
+		self.path = path
 		self.timerState = TimerappStates["Reset"]
 		#print "TimerState: ", self.timerState
-		self.systemTrayIcon = QSystemTrayIcon(QIcon(path + "bomb.png"), self)			# TODO: use absolute path
+		self.systemTrayIcon = QSystemTrayIcon(QIcon(self.path + "bomb.png"), self)			# TODO: use absolute path
 		self.setup_menu()
 		self.systemTrayIcon.activated.connect(self.on_systemTrayIcon_activated)
 		self.systemTrayIcon.show()
@@ -79,7 +80,7 @@ class TimerWindow(QMainWindow):
 	def start_timer(self):
 		self.infoTimer.start(1000) # 1 sec duration
 		self.ui.pushButton.setText(self.FirstBtnStates[1])
-		self.systemTrayIcon.setIcon(QIcon("bomb_run.png"))
+		self.systemTrayIcon.setIcon(QIcon(self.path + "bomb_run.png"))
 		self.ui.lineEdit.setReadOnly(True)
 		self.timerState = TimerappStates["Run"]
 		self.combineAction.setText("Pause")
@@ -88,7 +89,7 @@ class TimerWindow(QMainWindow):
 	def pause_timer(self):
 		self.infoTimer.stop()
 		self.ui.pushButton.setText(self.FirstBtnStates[2])
-		self.systemTrayIcon.setIcon(QIcon("bomb_paused.png"))
+		self.systemTrayIcon.setIcon(QIcon(self.path + "bomb_paused.png"))
 		self.systemTrayIcon.setToolTip("[Paused|%s" % (self.calc_time_info()))
 		self.timerState = TimerappStates["Pause"]
 		self.combineAction.setText("Resume")
@@ -96,7 +97,7 @@ class TimerWindow(QMainWindow):
 	def continue_timer(self):
 		self.infoTimer.start(1000)
 		self.ui.pushButton.setText(self.FirstBtnStates[1])
-		self.systemTrayIcon.setIcon(QIcon("bomb_run.png"))
+		self.systemTrayIcon.setIcon(QIcon(self.path + "bomb_run.png"))
 		self.combineAction.setText("Pause")
 		self.timerState = TimerappStates["Run"]	
 
@@ -114,7 +115,7 @@ class TimerWindow(QMainWindow):
 		self.info_timeout = 0
 		self.ui.lineEdit.setText("")
 		self.ui.lcdNumber.display(self.info_timeout)
-		self.systemTrayIcon.setIcon(QIcon("bomb.png"))
+		self.systemTrayIcon.setIcon(QIcon(self.path + "bomb.png"))
 		self.systemTrayIcon.setToolTip(AppVersion)
 		self.ui.lineEdit.setReadOnly(False)
 		self.combineAction.setVisible(False)
