@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 import sys, os, re
@@ -8,7 +8,7 @@ from interface import Ui_MainWindow
 from PyQt4.Qt import QMessageBox, QObject
 
 TimerappStates = {"Run":1, "Pause":2, "Reset":3}
-AppVersion = "Timer v. 0.0.4a"
+AppVersion = "Timer v. 0.0.5a"
 
 class TimerWindow(QMainWindow):
 
@@ -190,7 +190,9 @@ class TimerWindow(QMainWindow):
 
 def main():
 	realpath = os.path.realpath(__file__)
-	path = re.match(r'.*/', realpath)
+	pathgroups = re.match(r'.*/', realpath)
+	path = pathgroups.group(0) if pathgroups else ""
+	
 	app = QApplication(sys.argv)
 
 	if QSystemTrayIcon.isSystemTrayAvailable() == False:
@@ -199,7 +201,7 @@ def main():
 
 		exit(-1)
 
-	ex = TimerWindow(path.group(0))
+	ex = TimerWindow(path)
 	sys.exit(app.exec_())
 
 
