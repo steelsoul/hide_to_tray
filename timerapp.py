@@ -1,15 +1,14 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 
-import sys
-import re
+import sys, os, re
 from PyQt4 import QtCore
 from PyQt4.QtGui import *
 from interface import Ui_MainWindow
 from PyQt4.Qt import QMessageBox, QObject
 
 TimerappStates = {"Run":1, "Pause":2, "Reset":3}
-AppVersion = "Timer v. 0.0.3a"
+AppVersion = "Timer v. 0.0.4a"
 
 class TimerWindow(QMainWindow):
 
@@ -190,11 +189,8 @@ class TimerWindow(QMainWindow):
 			self.continue_timer()
 
 def main():
-	print ('Number of arguments:', len(sys.argv), 'arguments.')
-	print ('Argument List:', str(sys.argv))
-	pattern = r'.*/'
-	result = re.match(pattern, sys.argv[0])
-	print ('Result: ', result.group(0))
+	realpath = os.path.realpath(__file__)
+	path = re.match(r'.*/', realpath)
 	app = QApplication(sys.argv)
 
 	if QSystemTrayIcon.isSystemTrayAvailable() == False:
@@ -203,7 +199,7 @@ def main():
 
 		exit(-1)
 
-	ex = TimerWindow(result.group(0))
+	ex = TimerWindow(path.group(0))
 	sys.exit(app.exec_())
 
 
