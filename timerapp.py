@@ -5,7 +5,7 @@ import sys, os, re
 from PyQt4 import QtCore
 from PyQt4.QtGui import *
 from interface import Ui_MainWindow
-from PyQt4.Qt import QMessageBox, QObject
+from PyQt4.Qt import QMessageBox, QObject, QPoint, QRect, QDesktopWidget
 
 TimerappStates = {"Run":1, "Pause":2, "Reset":3}
 AppVersion = "Timer v. 0.0.5a"
@@ -55,10 +55,15 @@ class TimerWindow(QMainWindow):
 	@QtCore.pyqtSlot(QSystemTrayIcon.ActivationReason)
 	def on_systemTrayIcon_activated(self, reason):
 		if reason == QSystemTrayIcon.DoubleClick:
-			self.showAction.setText("Hide")
-			self.showNormal()
-			self.activateWindow()
-			self.isShown = True
+			if self.isShown:
+				self.showAction.setText("Show")
+				self.hide()
+				self.isShown = False
+			else:
+				self.showAction.setText("Hide")
+				self.showNormal()
+				self.activateWindow()
+				self.isShown = True
 
 	def on_text_edit_changed(self, text):
 		#print ("Input %s" % text)
@@ -126,11 +131,14 @@ class TimerWindow(QMainWindow):
 	def on_timeout(self):
 		self.systemTrayIcon.setToolTip("TImeout")
 		self.reset_timer()
-		self.isShown = True
-		self.showNormal()
-		msgBox = QMessageBox()		# TODO: Center message box
-		msgBox.setWindowTitle("== Notification ==")
-		msgBox.setText("On timer!")
+		msgBox = QMessageBox(QMessageBox.Information,
+			"== Notification ==",
+			"On timer!",
+			QMessageBox.NoButton,
+			None)
+		screenrect = QDesktopWidget().screen().rect()
+		msgBox.move(QPoint(screenrect.width() / 2 - msgBox.sizeHint().width() / 2,
+			screenrect.height() / 2 - msgBox.sizeHint().height() / 2))
 		msgBox.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 		msgBox.exec_()
 		
