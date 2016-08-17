@@ -8,7 +8,7 @@ from interface import Ui_MainWindow
 from PyQt4.Qt import QMessageBox, QObject, QPoint, QRect, QDesktopWidget
 
 TimerappStates = {"Run":1, "Pause":2, "Reset":3}
-AppVersion = "Timer v. 0.0.5a"
+AppVersion = "Timer v. 0.0.8a"
 
 class TimerWindow(QMainWindow):
 
@@ -24,7 +24,16 @@ class TimerWindow(QMainWindow):
 		self.systemTrayIcon.show()
 		self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 		self.setup_logic()
+		QApplication.setQuitOnLastWindowClosed(False)
 		
+	def closeEvent(self, event):
+		# do stuff
+		can_exit = True
+		if can_exit:
+			event.accept() # let the window close
+		else:
+			event.ignore()
+
 	def setup_menu(self):
 		self.traymenu = QMenu(self)
 		self.combineAction = self.traymenu.addAction("Start")
@@ -80,6 +89,7 @@ class TimerWindow(QMainWindow):
 	def on_return_pressed(self):
 		print ("on_return_pressed")
 		self.on_start_btn_pressed(self)
+
 			
 	def start_timer(self):
 		self.infoTimer.start(1000) # 1 sec duration
@@ -207,12 +217,10 @@ def main():
 	if QSystemTrayIcon.isSystemTrayAvailable() == False:
 		QMessageBox("Error", "<b> No system systemTrayIcon is available!</b>", QMessageBox.Critical,
 					QMessageBox.Yes | QMessageBox.Escape, QMessageBox.NoButton, QMessageBox.NoButton).exec_()
-
 		exit(-1)
 
 	ex = TimerWindow(path)
 	sys.exit(app.exec_())
-
 
 if __name__ == '__main__':
 	main()
