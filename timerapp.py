@@ -78,9 +78,8 @@ class TimerWindow(QMainWindow):
 				self.init_timeout = self.info_timeout
 
 	def on_return_pressed(self):
-		#print ("on_return_pressed")
-		if self.ui.pushButton.text() == self.FirstBtnStates[0]:
-			start_timer(self)
+		print ("on_return_pressed")
+		self.on_start_btn_pressed(self)
 			
 	def start_timer(self):
 		self.infoTimer.start(1000) # 1 sec duration
@@ -115,6 +114,7 @@ class TimerWindow(QMainWindow):
 			self.continue_timer()
 			
 	def reset_timer(self):
+		self.timerState = TimerappStates["Reset"]
 		self.ui.pushButton.setText(self.FirstBtnStates[0])
 		self.infoTimer.stop()
 		self.info_timeout = 0
