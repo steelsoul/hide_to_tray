@@ -208,7 +208,8 @@ class TimerWindow(QMainWindow):
 			self.continue_timer()
 
 def main():
-	realpath = os.path.realpath(__file__)
+	realpath = os.path.realpath('__file__')
+	print ("Path: %s" % realpath)
 	pathgroups = re.match(r'.*/', realpath)
 	path = pathgroups.group(0) if pathgroups else ""
 	
