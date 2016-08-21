@@ -30,7 +30,7 @@ setup(
 	version="0.1.0a",
 	description="A simple timer application",
 	author="Alexander Pushkar",
-	console = [{"script":"timerapp.py"}],
+	windows = [{"script":"timerapp.py"}],
 	data_files = find_data_files('', '', [
 		'bomb.png', 
 		'bomb_paused.png', 

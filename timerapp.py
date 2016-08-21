@@ -8,7 +8,7 @@ from interface import Ui_MainWindow
 from PyQt4.Qt import QMessageBox, QObject, QPoint, QRect, QDesktopWidget
 
 TimerappStates = {"Run":1, "Pause":2, "Reset":3}
-AppVersion = "Timer v. 0.0.8a"
+AppVersion = "Timer v. 0.1.0a"
 
 class TimerWindow(QMainWindow):
 
