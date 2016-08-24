@@ -8,7 +8,7 @@ from interface import Ui_MainWindow
 from PyQt4.Qt import QMessageBox, QObject, QPoint, QRect, QDesktopWidget
 
 TimerappStates = {"Run":1, "Pause":2, "Reset":3}
-AppVersion = "Timer v. 0.0.8a"
+AppVersion = "Timer v. 0.1.0a"
 
 class TimerWindow(QMainWindow):
 
@@ -87,7 +87,7 @@ class TimerWindow(QMainWindow):
 				self.init_timeout = self.info_timeout
 
 	def on_return_pressed(self):
-		print ("on_return_pressed")
+		#print ("on_return_pressed")
 		self.on_start_btn_pressed(self)
 
 			
@@ -213,7 +213,7 @@ def main():
 	except NameError:
 		realpath = os.path.realpath('')
 
-	print ("Path: %s" % realpath)
+	#print ("Path: %s" % realpath)
 	pathgroups = re.match(r'.*/', realpath)
 	path = pathgroups.group(0) if pathgroups else ""
 	
