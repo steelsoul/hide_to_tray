@@ -1,5 +1,9 @@
 # hide_to_tray
-Qt4 hide to tray is the simplest timer.
-Just enter the amount of time you want to spare and press start. The timer will notify you when your time is over.
 
-For able to run it you need install PyQt4 module before.
+The simple cross-platform back counting timer based on Qt. Now uses Qt5.
+
+Install PyQt5 using
+pip3 install PyQt5
+
+run app using
+python3 timerapp.py
