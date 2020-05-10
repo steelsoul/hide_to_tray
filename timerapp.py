@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import sys, os, re
-from PyQt4 import QtCore
-from PyQt4.QtGui import *
-from interface import Ui_MainWindow
-from PyQt4.Qt import QMessageBox, QObject, QPoint, QRect, QDesktopWidget
+from PyQt5 import QtCore
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import QIcon, QRegExpValidator, QGuiApplication
+from interface5 import Ui_MainWindow
 
 TimerappStates = {"Run":1, "Pause":2, "Reset":3}
 AppVersion = "Timer v. 0.1.0a"
@@ -146,8 +146,8 @@ class TimerWindow(QMainWindow):
 			"On timer!",
 			QMessageBox.NoButton,
 			None)
-		screenrect = QDesktopWidget().screen().rect()
-		msgBox.move(QPoint(screenrect.width() / 2 - msgBox.sizeHint().width() / 2,
+		screenrect = QGuiApplication.primaryScreen().geometry()
+		msgBox.move(QtCore.QPoint(screenrect.width() / 2 - msgBox.sizeHint().width() / 2,
 			screenrect.height() / 2 - msgBox.sizeHint().height() / 2))
 		msgBox.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 		msgBox.exec_()
@@ -171,7 +171,7 @@ class TimerWindow(QMainWindow):
 	def changeEvent(self, event):
 		if event.type() == QtCore.QEvent.WindowStateChange:
 			if self.windowState() & QtCore.Qt.WindowMinimized:
-				QtCore.QTimer.singleShot(0, self, QtCore.SLOT("hide()"))
+				QtCore.QTimer.singleShot(0, self.hide)
 				self.showAction.setText("Show")
 				self.isShown = False
 		QMainWindow.changeEvent(self, event)
@@ -192,7 +192,7 @@ class TimerWindow(QMainWindow):
 
 	def toggleShowWindow(self):
 		self.isShown = not self.isShown
-		item = QObject.sender(self)
+		item = QtCore.QObject.sender(self)
 		if self.isShown:
 			item.setText("Hide")
 			self.activateWindow()

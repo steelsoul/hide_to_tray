@@ -1,0 +1,98 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'interface.ui'
+#
+# Created by: PyQt5 UI code generator 5.14.2
+#
+# WARNING! All changes made in this file will be lost!
+
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.setWindowModality(QtCore.Qt.NonModal)
+        MainWindow.setEnabled(True)
+        MainWindow.resize(401, 251)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
+        MainWindow.setSizePolicy(sizePolicy)
+        MainWindow.setMinimumSize(QtCore.QSize(401, 251))
+        MainWindow.setMaximumSize(QtCore.QSize(401, 251))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("../../../.designer/backup/bomb.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("bomb.png"), QtGui.QIcon.Normal, QtGui.QIcon.On)
+        MainWindow.setWindowIcon(icon)
+        MainWindow.setWindowOpacity(1.0)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.centralwidget.sizePolicy().hasHeightForWidth())
+        self.centralwidget.setSizePolicy(sizePolicy)
+        self.centralwidget.setObjectName("centralwidget")
+        self.layoutWidget = QtWidgets.QWidget(self.centralwidget)
+        self.layoutWidget.setGeometry(QtCore.QRect(10, 10, 381, 191))
+        self.layoutWidget.setObjectName("layoutWidget")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.layoutWidget)
+        self.verticalLayout.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.label = QtWidgets.QLabel(self.layoutWidget)
+        self.label.setObjectName("label")
+        self.horizontalLayout.addWidget(self.label)
+        self.lineEdit = QtWidgets.QLineEdit(self.layoutWidget)
+        self.lineEdit.setInputMask("")
+        self.lineEdit.setText("")
+        self.lineEdit.setMaxLength(3)
+        self.lineEdit.setCursorPosition(0)
+        self.lineEdit.setObjectName("lineEdit")
+        self.horizontalLayout.addWidget(self.lineEdit)
+        self.label_2 = QtWidgets.QLabel(self.layoutWidget)
+        self.label_2.setObjectName("label_2")
+        self.horizontalLayout.addWidget(self.label_2)
+        self.verticalLayout.addLayout(self.horizontalLayout)
+        self.lcdNumber = QtWidgets.QLCDNumber(self.layoutWidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.lcdNumber.sizePolicy().hasHeightForWidth())
+        self.lcdNumber.setSizePolicy(sizePolicy)
+        self.lcdNumber.setProperty("value", 0.0)
+        self.lcdNumber.setObjectName("lcdNumber")
+        self.verticalLayout.addWidget(self.lcdNumber)
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.pushButton = QtWidgets.QPushButton(self.layoutWidget)
+        self.pushButton.setObjectName("pushButton")
+        self.horizontalLayout_2.addWidget(self.pushButton)
+        self.pushButton_2 = QtWidgets.QPushButton(self.layoutWidget)
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.horizontalLayout_2.addWidget(self.pushButton_2)
+        self.verticalLayout.addLayout(self.horizontalLayout_2)
+        MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 401, 25))
+        self.menubar.setObjectName("menubar")
+        MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        self.statusbar.setEnabled(False)
+        self.statusbar.setObjectName("statusbar")
+        MainWindow.setStatusBar(self.statusbar)
+
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "MiniTimer"))
+        self.label.setText(_translate("MainWindow", "Enter timeout:"))
+        self.label_2.setText(_translate("MainWindow", "minutes"))
+        self.pushButton.setText(_translate("MainWindow", "Start"))
+        self.pushButton_2.setText(_translate("MainWindow", "Reset"))
